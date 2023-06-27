@@ -1,0 +1,93 @@
+.sign-in-page {
+    position: relative;
+    max-width: 450px;
+    margin: 70px 100px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    /* text-align: center; */
+    background-color: #fff;
+  }
+  
+  .signcat {
+    position: absolute;
+    top: 0;
+    left: -110px;
+    width: 1400px;
+    height: 700px;
+    z-index: -1;
+    margin-top: -70px;
+  }
+  
+  
+  .sign-in-page h2 {
+    text-align: center;
+  }
+  
+  .signform {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .sign-in-page form > div {
+    width: calc(50% - 10px);
+    margin-bottom: 10px;
+  }
+  
+  .signlab {
+    display: block;
+    margin-bottom: 5px;
+    color: black;
+  }
+  
+  .signinp,
+  .signsel {
+    width: 80%;
+    height: 20px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: rgb(236, 235, 233);
+  }
+  
+  .signbut[type="submit"] {
+    width: 50%;
+    padding: 10px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .signbut[type="submit"]:hover {
+    background-color: #45a049;
+  }
+  
+  .sign-in-page .already-have-account {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .sign-in-page .already-have-account a {
+    /* color: #007bff; */
+    text-decoration: none;
+  }
+  
+  .sign-in-page .already-have-account a:hover {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .regla{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .regbut{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }

@@ -1,0 +1,104 @@
+.login-in-page {
+    position: relative;
+    max-width: 400px;
+    margin: 160px 180px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    text-align: center;
+    background-color: #fff;
+  }
+  
+  .logincat {
+    /* position: absolute;
+    top: 0;
+    right: -120px;
+    width: 400px; 
+    height: 700px; 
+    z-index: -1;
+    margin-top: -70px; */
+    background-size: cover;
+    background-image: url("https://wallpapercave.com/wp/wp4180128.jpg");
+    width: 100%;
+    /* height: 100vh; */
+    /* height: fit-content; */
+    /* position: fixed; */
+  }
+  
+  
+  .login-in-page h2 {
+    text-align: center;
+  }
+  
+  .loginform {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+  }
+  
+  .loginform > div {
+    margin-bottom: 10px;
+  }
+  
+  .loginlab {
+    display: block;
+    margin-bottom: 5px;
+    /* text-align: left; */
+    margin-right: 280px;
+    color: black;
+  }
+  
+  .logininp,
+  .loginsel {
+    width: 80%;
+    height: 20px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: rgb(236, 235, 233);
+  }
+
+  .signselll{
+    width: 90%;
+    height: 35px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: rgb(236, 235, 233);
+  }
+
+  
+  .loginbut[type="submit"] {
+    width: 50%;
+    padding: 10px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: auto;
+    border-radius: 10px;
+  }
+  
+  .loginbut[type="submit"]:hover {
+    background-color: #45a049;
+  }
+  
+  .login-in-page > div {
+    margin-top: 20px;
+  }
+  
+  .login-in-page > div a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .login-in-page > div a:hover {
+    text-decoration: underline;
+  }
+  
+  .logincenter{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
