@@ -1,3 +1,13 @@
+  .top-collection-section{
+    margin-top: 100px;
+    
+  }
+  .top-collection-section h2{
+   text-align: center;
+    
+  }
+  
+  
   .card-1 {
   filter: none;
   opacity: 1;

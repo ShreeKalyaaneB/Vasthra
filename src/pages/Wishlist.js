@@ -52,11 +52,11 @@ wishlist.map((saree) => (
 
     <div className="Wishcard1">
 
-      <img className="wishimg" src={banner} alt={saree.name} />
+      <img className="wishimg" src={saree.imageUrl} alt={saree.name} />
 
       <div className="Wishttext">
 
-        <h3 className="wishtext1">{saree.name}</h3>
+        <h3 className="wishtext1">{saree.material}</h3>
 
         <h4 className="wishtext2">{saree.fabric}</h4>
 
@@ -64,7 +64,7 @@ wishlist.map((saree) => (
 
       <div className="WishTEXT">
 
-        <h4 className="wishtext3">Rs: {saree.price}</h4>
+        <h4 className="wishtext3">₹ {saree.price}</h4>
 
         <Link  to={`/description/${saree._id}`}>
 

@@ -1,9 +1,9 @@
-import Saree from "../modals/AddSaree.js"
+import Sarees from "../modals/AddSaree.js";
 
 export const imageStatus = async (req, res) => {
     try {
       
-      const image = await Saree.findOne({ _id: req.params._id });
+      const image = await Sarees.findOne({ _id: req.params._id });
 
   
      

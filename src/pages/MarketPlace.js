@@ -3,6 +3,7 @@ import "./MarketPlace.css";
 import { Range } from "react-range";
 import axios from "../url.js";
 import goldy from "../vas.png";
+import check from "../../src/check.png"
 
 import {
   AiOutlineSearch,
@@ -21,6 +22,8 @@ const MarketPlace = () => {
   const [transmission, setTransmission] = useState([]);
   const [iswishListed, setwishList] = useState(false);
   const [daata, setDaata] = useState([]);
+  const [petsId, setPetsId] = useState([]);
+  const [daaata, setDaaata] = useState([])
   const navigate = useNavigate();
   const descript=(id) =>{
     navigate(`/viewproduct/${id}`)
@@ -65,14 +68,29 @@ const MarketPlace = () => {
         const response = await axios.get("/allsarees");
         console.log(response.data.saree);
         setDaata(response.data.saree);
-        response.data.saree.forEach((saree) => {
-          console.log(saree.fabric);
-        });
+        const sareeID = response.data.saree.map((saree) => saree._id);
+        setPetsId(sareeID);
+       
+        try{
+          const responsee = await axios.get(`/image/${sareeID}`);
+          const updatedDaata = daata.map((saree) => ({
+            ...saree,
+            imageUrl:
+              responsee.data.find((data) => data._id === saree._id)?.imageUrl || null,
+          }));
+          setDaaata(updatedDaata);
+        }catch (error) {
+          console.log(error);
+        }
+        
       } catch (error) {
         console.log(error);
       }
     };
+    
     fetchData();
+  },[]);
+  useEffect(()=>{
     const storedWishList = localStorage.getItem("wishList");
     if (storedWishList) {
       const parsedWishList = JSON.parse(storedWishList);
@@ -223,16 +241,16 @@ const MarketPlace = () => {
             </div>
             </div>
             </div>
-            <div className="marketalign">
+            <div className="marketgrid">
         {Array.isArray(daata) && daata.length > 0 ? (
           daata.map((saree) => (
-            <div key={saree._id} className="car-card">
+            <div key={saree._id} className="market-card" >
               <div>
                 <img
-                  className="car-image"
-                  src={goldy}
+                  className="market-image"
+                  src={saree.imageUrl}
                   onClick={() => descript(saree._id)}
-                  alt="Pet"
+                  alt="Saree"
                 />
                 <div className="favorite-icon">
                   {iswishListed[saree._id] ? (
@@ -248,19 +266,24 @@ const MarketPlace = () => {
                   )}
                             
                           </div>
+                          {saree.verifyStatus === "verified" && (
+
+<img src={check} style={{width:"50px", height:"50px"}} className="check-icon" alt="Check" />
+
+)}
                           {/* <div className="titpri"> */}
-                          <div className="titleinfo">
+                          <div className="marketinfo">
                           <p className="car-title">{saree.fabric}</p>
                           <br/>
                           <p className="car-info">{saree.material}</p>
                           <br/>
                           </div>
-                          <br/>
-                          <div className="carlo">
+                          
+                          {/* <div className="carlo">
                           <p className="car-location">
                             {saree.manufacturer}
                           </p>
-                          </div>
+                          </div> */}
                          
                           <div className="carpri">
                           <p className="car-priceee"> ₹{saree.price}</p>
@@ -272,7 +295,7 @@ const MarketPlace = () => {
                       // </div>
                     ))
                   ) : (
-                    <p>No pets available.</p>
+                    <p>No sarees available.</p>
                   )}
 
           

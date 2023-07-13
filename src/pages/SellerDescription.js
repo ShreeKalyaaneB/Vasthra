@@ -36,29 +36,29 @@ const SellerDescription = (props) => {
     <div>
         {/* <SellerBar/> */}
       <div className="attai">
-        <img className="monster" style={{marginLeft:"350px"}} src={goldy} alt="" />
+        <img className="monster" style={{marginLeft:"250px", marginRight:"100px"}} src={daata.imageUrl} alt="" />
 
         <div className="detailsbox" style={{marginTop:"170px"}}>
           <div className="details show">
             <div className="det">
               <div className="category">
-                <span className="category-label">Name:</span>
+                <span className="category-label"> Saree Name:</span>
                 <span className="category-value">{daata.fabric}</span>
               </div>
               <div className="category">
-                <span className="category-label">Breed:</span>
+                <span className="category-label">Material:</span>
                 <span className="category-value">{daata.material}</span>
               </div>
               <div className="category">
-                <span className="category-label">Gender:</span>
-                <span className="category-value">{daata.price}</span>
+                <span className="category-label">Price:</span>
+                <span className="category-value">₹{daata.price}</span>
               </div>
               <div className="category">
-                <span className="category-label">Category:</span>
+                <span className="category-label">Color:</span>
                 <span className="category-value">{daata.colorfamily}</span>
               </div>
               <div className="category">
-                <span className="category-label">Age:</span>
+                <span className="category-label">Manufacturer:</span>
                 <span className="category-value">{daata.manufacturer}</span>
               </div>
            

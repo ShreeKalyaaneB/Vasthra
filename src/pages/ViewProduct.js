@@ -8,10 +8,12 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import jwt_decode from "jwt-decode";
 import Swal from "sweetalert2"
+import Notverified from "./Notverified.png"
 
 const ViewProduct = () => {
 const navigate = useNavigate();
 const [daata,setDaata] = useState([]);
+const [isAddedtocart, setAddtoCart] = useState({});
 const [status, setStatus] = useState("");
 const [showQRCodeDetails, setShowQRCodeDetails] = useState(false);
 const [qrCodeValue, setQRCodeValue] = useState("");
@@ -26,27 +28,27 @@ const addd=()=>{
 
 const tokenn = jwt_decode(cookies.user_token);
 
-const handleBuyNow = () => {
-  // Check if the cookie is present
-  const cookie = document.cookie;
-  const hasCookie = cookie.includes("your_cookie_name_here");
+// const handleBuyNow = () => {
+//   // Check if the cookie is present
+//   const cookie = document.cookie;
+//   const hasCookie = cookie.includes("your_cookie_name_here");
   
-  if (tokenn.role === "buyer") {
-    // Navigate to "/buypet" page
-    navigate("/buypet");
-  } else {
-    // Display SweetAlert2 popup and navigate to "/login" page after 4 seconds
-    Swal.fire({
-      title: "Please Login",
-      text: "You need to login to continue",
-      icon: "warning",
-      showConfirmButton: false,
-      timer: 2000,
-    }).then(() => {
-      navigate("/login");
-    });
-  }
-};
+//   if (tokenn.role === "buyer") {
+//     // Navigate to "/buypet" page
+//     navigate("/buypet");
+//   } else {
+//     // Display SweetAlert2 popup and navigate to "/login" page after 4 seconds
+//     Swal.fire({
+//       title: "Please Login",
+//       text: "You need to login to continue",
+//       icon: "warning",
+//       showConfirmButton: false,
+//       timer: 2000,
+//     }).then(() => {
+//       navigate("/login");
+//     });
+//   }
+// };
 
 const { _id } = useParams();
 const stringId = String(_id); 
@@ -62,7 +64,45 @@ const addtowish = async () => {
     console.error(error);
   }
 };
+const handleBuyNow = async () => {
+  // Check if the cookie is present
+  try{
+  const tokenn = jwt_decode(cookies.user_token);
 
+  if (tokenn.role === "buyer") {
+    try {
+      console.log(_id);
+      const response = await axios.get(`/addtocart/${_id}`);
+      console.log(response.data.cart);
+
+      setAddtoCart(response.data.cart);
+      navigate("/cart");
+    } catch (error) {
+      console.error(error);
+    }
+  } else {
+    // Display SweetAlert2 popup and navigate to "/login" page after 4 seconds
+    Swal.fire({
+      title: "Please Login",
+      text: "You need to login to buy ",
+      icon: "warning",
+      showConfirmButton: false,
+      timer: 2000,
+    }).then(() => {
+      navigate("/login");
+    });
+  }
+}catch(error){
+  Swal.fire({
+    title: "Please Login",
+    text: "You need to login to buy ",
+    icon: "warning",
+    showConfirmButton: false,
+    timer: 2000,
+  }).then(() => {
+    navigate("/login");
+  });  }
+};
 
 useEffect(() => {
   const fetchData = async () => {
@@ -107,30 +147,46 @@ const generateQRCode = () => {
       <Nav />
       <div className="attai">
         {/* <div> */}
+        <div className="monimg">
         <img
           className="monster"
-          src="main-banner-saree1.png"
+          src={daata.imageUrl}
           alt=""
         />
+        </div>
         {/* </div> */}
 
         <div className="detailsbox">
-          <h4 className="tncs">{daata.fabric}</h4>
+          <h4 className="tncs">Saree : {daata.fabric}</h4>
 
           <div className="factory">
-            <p> {daata.material}. {daata.colorfamily}</p>
+            <p>Material : {daata.material} </p>
+           
+          </div>
+          <div className="factory">
+          <p>Color : {daata.colorfamily}</p>
           </div>
           <div className="idam">
             <div className="land">
               <AiOutlineEnvironment className="signified" />
-              <p>{daata.manufacturer}</p>
+              <p>Manufacturer : {daata.manufacturer}</p>
             </div>
-            <p className="kaasu">{daata.price}</p>
-            <p className="toomuch">Scan the QR:</p>
+            <p className="kaasu">Price : ₹{daata.price}</p>
+            {/* <p className="toomuch">Scan the QR:</p> */}
           </div>
-          <div className="pathukaapu">
-          {verifyStatus === "verified" && generateQRCode()} {/* Generate the QR code dynamically */}
-        </div>
+
+          <p className="toomuch">Scan the QR:</p>
+          <div className="pathukaapu" onClick={() => console.log(qrCodeValue)}>
+{verifyStatus === "verified" ? (
+generateQRCode()
+) : (
+    <img
+    className="notverifiedqr"
+    src={Notverified}
+    alt="Not verified"
+/>
+  )}
+</div>
        
           <div className="diffBB">
             <button className="purchase" onClick={handleBuyNow}>ADD TO CART</button>
@@ -152,7 +208,7 @@ const generateQRCode = () => {
 
             <button className="vaangu" onClick={handleBuyNow}>BUY NOW</button>
           </div>
-          <div className="tommy">
+          {/* <div className="tommy">
             <p className="whole">Saree Overview</p>
             <div className="tharavu">
               <div className="romeio">
@@ -172,13 +228,13 @@ const generateQRCode = () => {
                 </div>
               </div>
                          </div>
-          </div>
+          </div> */}
         </div>
-        <div className="qr-check-button">
+        {/* <div className="qr-check-button">
             <button onClick={() => console.log(qrCodeValue)}>
               Check QR Value
             </button>
-          </div>
+          </div> */}
         {/* <img className="pathukaapu" src={qr} /> */}
       </div>
     </div>

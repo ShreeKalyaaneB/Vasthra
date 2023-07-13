@@ -52,9 +52,22 @@ const Nav = () => {
     if (isUserLoggedIn) {
       openPopup();
     } else {
-      alert("Please log in to add to wishlist.");
+      alert("Please login to add to wishlist.");
     }
   };
+  const handleCartIconClick = () => {
+    const userCookie = document.cookie
+      .split(";")
+      .map((cookie) => cookie.trim())
+      .find((cookie) => cookie.startsWith("user_token="));
+
+    if (isUserLoggedIn) {
+      navigate("/cart")
+    } else {
+      alert("Please login to Cart.");
+    }
+  };
+  
 
   return (
     <nav className="nav-container">
@@ -71,7 +84,7 @@ const Nav = () => {
       <div className="sub-nav">
         <Link to="/market">Sarees</Link>
         <Link to="/">About us</Link>
-        <Link onClick={verifypagee}>Become a Verifier</Link>
+        <Link onClick={verifypagee}>Verifier</Link>
         
       </div>
       <div className="search-bar">
@@ -95,7 +108,7 @@ const Nav = () => {
           <FiHeart />
         </Link>
         <Link
-          onClick={() => navigate("/cart")}
+          onClick={handleCartIconClick}
           // style={{ marginRight: "10px", fontSize: "21px", cursor: "pointer" }}
         >
           <FiShoppingCart />

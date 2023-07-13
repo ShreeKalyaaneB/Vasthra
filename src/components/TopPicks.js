@@ -5,32 +5,16 @@ import axios from "../url";
 import goldy from "../vas.png";
 
 const TopPicks = () => {
-  const navigate = useNavigate(); // Declare navigate here
-
+  const containerRef = useRef(null);
   const [daata, setDaata] = useState([]);
-
+  const navigate = useNavigate(); 
   const descript = (id) => {
-    navigate(`/description/${id}`);
+    navigate(`/viewproduct/${id}`);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("/allsarees");
-        console.log(response.data.saree);
-        setDaata(response.data.saree);
-        response.data.saree.forEach((saree) => {
-          console.log(saree.fabric);
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  
 
-    fetchData();
-  }, []);
-
-  const containerRef = useRef(null);
+ 
 
   const scrollRight = () => {
     containerRef.current.scrollTo({
@@ -45,6 +29,24 @@ const TopPicks = () => {
       behavior: 'smooth',
     });
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const responsee = await axios.get("/allsarees");
+        const allSarees = responsee.data.saree;
+  
+        const filteredPets = allSarees.filter((saree) => saree.imageUrl !== "");
+  
+        setDaata(filteredPets);
+        console.log(filteredPets,"sdjfjdsfkjddanbsdafbdsj,fkjdsfkndas ")
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+
 
   return (
     <section>
@@ -53,12 +55,12 @@ const TopPicks = () => {
         <div className="top-picks-wrapper" ref={containerRef}>
           <div className="top-picks-container">
             {Array.isArray(daata) && daata.length > 0 ? (
-              daata.map((saree) => (
-                <div className="card" key={saree._id} onClick={() => descript(saree._id)}>
-                  <img src={goldy} alt="Saree 1" />
+              daata.map((image,index) => (
+                <div className="card" key={image._id} alt={`Saree ${index+1}`} onClick={() => descript(image._id)}>
+                  <img src={image.imageUrl} alt="Saree 1" />
                   <button className="piclbut">Add to cart</button>
-                  <h3>{saree.fabric}.{saree.material}</h3>
-                  <p>₹{saree.price}</p>
+                  <h3>{image.fabric}    {image.material}</h3>
+                  <p>₹{image.price}</p>
                 </div>
               ))
             ) : (

@@ -3,7 +3,7 @@ import Saree from "../modals/AddSaree.js"
 export const removecart = async (req, res) => {
     try {
       
-      const cart = await Saree.findOne({ empName: req.params._id });
+      const cart = await Saree.findOne({ _id: req.params._id });
 
   
      

@@ -18,6 +18,12 @@ import removewishlist from "./routes/removewishlist.js";
 import removeallwish from "./routes/removeallwish.js";
 import removeallcart from "./routes/removeallcart.js";
 import imageStatus from "./routes/imageStatus.js";
+// import getData from "./routes/getData.js"
+import imageUrl from "./routes/imageUrl.js"
+
+import AWS from "aws-sdk";
+import multer from "multer";
+import multerS3 from "multer-s3";
 const app = express()
 dotenv.config();
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
@@ -28,6 +34,25 @@ app.use(function(req, res, next) {
     next();
     });
 
+
+    const s3 = new AWS.S3({
+        accessKeyId: process.env.ACCESS_KEY,
+        secretAccessKey: process.env.SECRET_ACCESS_KEY,
+        signatureVersion: "v4", // Add this line to specify the signature version
+      
+      });
+      
+      const upload = multer({
+        storage: multerS3({
+          s3: s3,
+          bucket: process.env.BUCKET_NAME,
+          key: function (req, file, cb) {
+            const _id = req.params._id;
+            const fileExtension = file.originalname;
+            cb(null, `SareeData/${_id}/${fileExtension}`);
+          },
+        }),
+      });
 
     const connect = async () =>{
         try {
@@ -60,7 +85,7 @@ app.use(express.json())
     app.use("/", removeallwish);
     app.use("/", removeallcart);
     app.use("/", imageStatus);
-    
+    app.use("/",imageUrl);
 
     
 
@@ -75,8 +100,90 @@ app.use(express.json())
     
         })
     })
-
-
+    
+    app.post(
+        "/uploadData/:_id",
+        upload.fields([{ name: "images", maxCount: 2 }, { name: "certificates", maxCount: 5 }]),
+        async function (req, res) {
+          const images = req.files["images"];
+          const certificates = req.files["certificates"];
+      
+          console.log("Uploaded images:", images);
+          console.log("Uploaded certificates:", certificates);
+      
+      
+          res.send({ uploadStatus: "success" });
+        }
+      );
+      
+      app.get("/images", async (req, res) => {
+          const params = {
+            Bucket: process.env.BUCKET_NAME,
+            Prefix: "SareeData/",
+          };
+        
+          try {
+            const s3Objects = await s3.listObjectsV2(params).promise();
+        
+            const images = s3Objects.Contents.filter((obj) => {
+              const key = obj.Key.toLowerCase();
+              return !key.endsWith("/") && (key.endsWith(".jpg") || key.endsWith(".jpeg") || key.endsWith(".png"));
+            });
+        
+            const imageUrls = images.map((image) => {
+              const imageUrl = s3.getSignedUrl("getObject", {
+                Bucket: process.env.BUCKET_NAME,
+                Key: image.Key,
+              });
+              const keyParts = image.Key.split("/");
+              const _id = keyParts[1];
+              console.log(imageUrl)
+              return {imageUrl, _id};
+            });
+        
+            res.send(imageUrls);
+          } catch (error) {
+            res.status(500).json({ error: "Failed to retrieve images"});
+          }
+        });
+        
+        app.get("/image/:_ids", async (req, res) => {
+          const { _ids } = req.params;
+          const idsArray = _ids.split(","); // Split the _ids string into an array
+        
+          const imageUrls = [];
+        
+          try {
+            for (const _id of idsArray) {
+              const params = {
+                Bucket: process.env.BUCKET_NAME,
+                Prefix: `SareeData/${_id}/`,
+              };
+        
+              const s3Objects = await s3.listObjectsV2(params).promise();
+        
+              const images = s3Objects.Contents.filter((obj) => {
+                const key = obj.Key.toLowerCase();
+                return !key.endsWith("/") && (key.endsWith(".jpg") || key.endsWith(".jpeg") || key.endsWith(".png"));
+              });
+        
+              if (images.length === 0) {
+                imageUrls.push({ _id, imageUrl: null }); // Add null imageUrl if no image found for the _id
+              } else {
+                const imageUrl = s3.getSignedUrl("getObject", {
+                  Bucket: process.env.BUCKET_NAME,
+                  Key: images[0].Key,
+                });
+                imageUrls.push({ _id, imageUrl });
+              }
+            }
+        
+            res.send(imageUrls);
+          } catch (error) {
+            res.status(500).json({ error: "Failed to retrieve the images" });
+          }
+        });
+        
     app.listen(9800,()=>{
         connect()
         console.log("Connected")

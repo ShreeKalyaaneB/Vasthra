@@ -1,9 +1,10 @@
 .top-picks-section {
-  margin-top: 40px;
+  /* margin-top: -40px; */
   text-align: center;
   position: relative;
   width: 95%;
   margin: auto;
+  
   /* object-fit: fill; */
   
 }
@@ -36,12 +37,13 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   padding: 8px;
   text-align: center;
-  width: 200px;
-  height: 270px;
+  width: 220px;
+  height: 290px;
   margin: 0 15px;
   scroll-snap-align: start;
   position: relative;
   z-index: 2;
+  margin-bottom: 330px
 }
 
 .card img {
@@ -73,6 +75,16 @@
   height: 100%;
   /* padding: 0 20px; */
   z-index: 1;
+  margin-top: -150px;
+  /* margin-left: -25px; */
+}
+
+.arrow-right{
+  margin-right: -40px;
+}
+
+.arrow-left{
+  margin-left: -30px;
 }
 
 .carousel-arrows span {

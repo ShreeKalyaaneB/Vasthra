@@ -34,6 +34,26 @@ const Sarees = new mongoose.Schema({
         required : true,
         default: "not verified"
     },
+    isAddedtocart:{
+        type:String,
+        default:"not added"
+    },
+    imageUploaded:{
+        type: String,
+        default: "not uploaded"
+    },
+    imageUrl:{
+        type:String,
+        default:""
+    },
+    sareename:{
+        type:String,
+       
+    },
+    collections:{
+        type:String,
+        
+    },
 
 },{timestamps:true})
 

@@ -11,12 +11,14 @@ function Collection() {
 
   const navigate = useNavigate();
   const handleViewAll=()=>{
-    navigate('/market')
+    navigate('/marketnew')
   }
 
   return (
-    <div className="top-picks-section">
+    <div className="top-collection-section">
+     
       <h2>Collections</h2>
+      <br/>
       <div className="Collectionpicks">
         <div className="grid-container">
           <div

@@ -15,6 +15,9 @@ import Register from './pages/Register';
 import SellerDescription from './pages/SellerDescription';
 import Sidebar from './pages/Sidebar';
 import Wishlist from './pages/Wishlist';
+import MarketNew from './pages/MarketNew';
+import Description from './components/Description';
+import StepDesc from './components/StepDesc';
 
 
 function App() {
@@ -37,6 +40,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={< Register/>} />
         <Route path="/wishlist" element={< Wishlist/>} />
+        <Route path="/marketnew" element={<MarketNew />} />
+        <Route path="/des" element={<Description />} />
+        <Route path="/step" element={<StepDesc />} />
         <Route path="/description/:_id" element={< SellerDescription/>} />
       </Routes>
     </Router>

@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 export const saree = async (req, res, next) => {
   try {
     const salt = bcrypt.genSaltSync(10);
-    const {fabric,material,price,colorfamily,manufacturer,image, verifyStatus} = req.body;
+    const {sareename,fabric,material,collections,price,colorfamily,manufacturer,image, verifyStatus} = req.body;
    
   if (!fabric || !material  || !price || !colorfamily || !manufacturer ) {
     return res
@@ -13,7 +13,7 @@ export const saree = async (req, res, next) => {
       .json({ message: "All the fields must be filled" });
   }
 
-  const newSaree = new Saree({fabric,material,price,colorfamily,manufacturer,verifyStatus});
+  const newSaree = new Saree({sareename,fabric,material,price,collections,colorfamily,manufacturer,verifyStatus});
 
  
 

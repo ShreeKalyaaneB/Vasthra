@@ -4,6 +4,7 @@ import axios from "../url.js";
 import { useNavigate } from "react-router";
 import Nav from "../components/Nav";
 import goldy from "../main-banner-saree1.png";
+import NavSell from "../components/NavSell";
 
 // import TopNav from "../Topbar/TopNav";
 // import Footer from "../Footer/Footer";
@@ -13,6 +14,7 @@ function Sidebar() {
   const [selectedMenu, setSelectedMenu] = useState("Orders");
   const navigate = useNavigate();
   const [daata, setDaata] = useState([]);
+  const [daaata, setDaaata] = useState([])
   const descript = (id) => {
     navigate(`/description/${id}`);
   };
@@ -25,25 +27,53 @@ function Sidebar() {
     const fetchData = async () => {
       try {
         const response = await axios.get("/allsarees");
+        const sareeData = response.data.saree;
         console.log(response.data.saree);
-        setDaata(response.data.saree);
+        setDaata(sareeData);
         response.data.saree.forEach((saree) => {
           console.log(saree.fabric);
+        });
+
+
+       const responsee = await axios.get("/images");
+        const imagesData = responsee.data;
+        setDaaata(imagesData);
+        imagesData.forEach((i) => {
+          console.log(i.imageUrl);
+        });
+  
+        // Match IDs and make the POST request
+        const matchingIDs = sareeData
+          .map((saree) => saree._id)
+          .filter((id) => imagesData.find((image) => image._id === id));
+  
+        matchingIDs.forEach(async (id) => {
+          const matchingImage = imagesData.find((image) => image._id === id);
+          try {
+            await axios.post("/imageUrl", {
+              imageUrl: matchingImage.imageUrl,
+              ids: [id],
+            });
+            console.log("Image URL posted for ID:", id);
+          } catch (error) {
+            console.log("Error posting image URL for ID:", id, error);
+          }
         });
       } catch (error) {
         console.log(error);
       }
     };
-
+  
     if (selectedMenu === "Collection") {
       fetchData();
     }
   }, [selectedMenu]);
+  
 
   return (
     <div>
       {/* <TopNav /> */}
-      <Nav/>
+      <NavSell/>
       <br/>
       <div style={{ display: "flex", flexDirection: "row" }}>
         <div
@@ -164,7 +194,7 @@ function Sidebar() {
                     <div>
                       <img
                         className="car-image"
-                        src={goldy}
+                        src={saree.imageUrl}
                         alt="Saree"
                       />
 
